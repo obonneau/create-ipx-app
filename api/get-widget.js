@@ -1,19 +1,20 @@
-const config = require('../config.json');
 const fetch = require('cross-fetch');
+const config = require('../config.json');
+const { getPullEndpoint } = require('./get-endpoints');
 
 async function getWidget() {
-  const {organizationId, pageId, apiKey} = config;
-  const base = config.isHipaaOrg ? 'https://searchhipaa.cloud.coveo.com' : 'https://search.cloud.coveo.com'
-  const url = `${base}/pages/${organizationId}/inappwidget/${pageId}?json=1`;
-
-  const options = {
-    method: 'GET',
-    headers: {
-      authorization: `Bearer ${apiKey}`
-    }
-  }
-  const res = await fetch(url, options);
-  return res.json();
+    const {
+        region, isHipaaOrg, organizationId, pageId, apiKey,
+    } = config;
+    const url = await getPullEndpoint(region, isHipaaOrg, organizationId, pageId);
+    const options = {
+        method: 'GET',
+        headers: {
+            authorization: `Bearer ${apiKey}`,
+        },
+    };
+    const res = await fetch(url, options);
+    return res.json();
 }
 
-module.exports = {getWidget}
+module.exports = { getWidget };

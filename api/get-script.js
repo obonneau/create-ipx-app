@@ -1,13 +1,15 @@
 const config = require('../config.json');
+const { getPlatformUrlBase } = require('./get-endpoints');
 
 /**
  * Construct the endpoint used to load the script for the IPX widget
  * @returns Url endpoint used to load IPX script
  */
 function getLoaderUrl() {
-    const { organizationId, pageId } = config;
-    const base = config.isHipaaOrg ? 'https://platformhipaa.cloud.coveo.com' : 'https://platform.cloud.coveo.com';
-    return `${base}/rest/organizations/${organizationId}/pages/${pageId}/inappwidget/loader`;
+    const {
+        isHipaaOrg, region, organizationId, pageId,
+    } = config;
+    return `https://${getPlatformUrlBase(region, isHipaaOrg)}/rest/organizations/${organizationId}/pages/${pageId}/inappwidget/loader`;
 }
 
 /**
