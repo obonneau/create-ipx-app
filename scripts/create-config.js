@@ -1,19 +1,22 @@
-const {writeFileSync, existsSync} = require('fs');
-const {resolve} = require('path');
+const { writeFileSync, existsSync } = require('fs');
+const { resolve } = require('path');
 
-const filePath = resolve(__dirname, '../config.json');
+const createConfig = () => {
+    const filePath = resolve(__dirname, '../config.json');
 
-if (existsSync(filePath)) {
-  return;
-}
+    if (existsSync(filePath)) {
+        return;
+    }
 
-const config = {
-  organizationId: '',
-  isHipaaOrg: false,
-  pageId: '',
-  pageName: '',
-  apiKey: ''
-}
+    const config = {
+        organizationId: '',
+        isHipaaOrg: false,
+        pageId: '',
+        pageName: '',
+        apiKey: '',
+    };
 
+    writeFileSync(filePath, JSON.stringify(config, undefined, 2));
+};
 
-writeFileSync(filePath, JSON.stringify(config, undefined, 2))
+createConfig();

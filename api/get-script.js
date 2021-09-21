@@ -6,7 +6,7 @@ const config = require('../config.json');
  */
 function getLoaderUrl() {
     const { organizationId, pageId } = config;
-    const base = config.isHipaaOrg ? "https://platformhipaa.cloud.coveo.com" : "https://platform.cloud.coveo.com";
+    const base = config.isHipaaOrg ? 'https://platformhipaa.cloud.coveo.com' : 'https://platform.cloud.coveo.com';
     return `${base}/rest/organizations/${organizationId}/pages/${pageId}/inappwidget/loader`;
 }
 
@@ -18,4 +18,4 @@ function getLoaderSnippet() {
     return `<script type="text/javascript" src="${getLoaderUrl()}" async ></script>`;
 }
 
-module.exports = { getLoaderUrl, getLoaderSnippet }
+module.exports = { getLoaderUrl, getLoaderSnippet };
