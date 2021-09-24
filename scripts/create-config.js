@@ -10,7 +10,6 @@ const createConfig = () => {
 
     const config = {
         organizationId: '',
-        isHipaaOrg: false,
         pageId: '',
         pageName: '',
         apiKey: '',

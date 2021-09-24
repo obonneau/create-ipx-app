@@ -4,9 +4,9 @@ const { getPullEndpoint } = require('./get-endpoints');
 
 async function getWidget() {
     const {
-        region, isHipaaOrg, organizationId, pageId, apiKey,
+        region, environment, organizationId, pageId, apiKey,
     } = config;
-    const url = await getPullEndpoint(region, isHipaaOrg, organizationId, pageId);
+    const url = await getPullEndpoint(region, environment, organizationId, pageId);
     const options = {
         method: 'GET',
         headers: {

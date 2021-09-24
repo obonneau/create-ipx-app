@@ -1,5 +1,5 @@
 const config = require('../config.json');
-const { getPlatformUrlBase } = require('./get-endpoints');
+const { getCoveoAPIUrl, PLATFORM_ENDPOINT_NAME } = require('./get-endpoints');
 
 /**
  * Construct the endpoint used to load the script for the IPX widget
@@ -7,9 +7,9 @@ const { getPlatformUrlBase } = require('./get-endpoints');
  */
 async function getLoaderUrl() {
     const {
-        isHipaaOrg, region, organizationId, pageId,
+        environment, region, organizationId, pageId,
     } = config;
-    return `https://${await getPlatformUrlBase(region, isHipaaOrg)}/rest/organizations/${organizationId}/pages/${pageId}/inappwidget/loader`;
+    return `https://${await getCoveoAPIUrl(region, environment, PLATFORM_ENDPOINT_NAME)}/rest/organizations/${organizationId}/pages/${pageId}/inappwidget/loader`;
 }
 
 /**

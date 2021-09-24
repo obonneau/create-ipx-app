@@ -4,9 +4,9 @@ const { getPushEndpoint } = require('./get-endpoints');
 
 async function publishFile(data) {
     const {
-        region, isHipaaOrg, organizationId, pageName, apiKey,
+        region, environment, organizationId, pageName, apiKey,
     } = config;
-    const url = await getPushEndpoint(region, isHipaaOrg, organizationId, pageName);
+    const url = await getPushEndpoint(region, environment, organizationId, pageName);
     const options = {
         method: 'POST',
         headers: {

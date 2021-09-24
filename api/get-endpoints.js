@@ -1,38 +1,30 @@
 const fetch = require('cross-fetch');
 
-const REGIONS_LIST_ENDPOINT = 'https://platform.cloud.coveo.com/rest/global/regions';
+const PLATFORM_ENDPOINT_NAME = 'mainEndpoint';
+const SEARCH_ENDPOINT_NAME = 'hostedSearchPagesEndpoint';
 
-const getSearchPageUrlBase = async (region, isHipaaOrg) => {
-    let base = 'search.cloud.coveo.com';
-    if (isHipaaOrg) {
-        base = 'searchhipaa.cloud.coveo.com';
-    } else if (region) {
-        const regionList = await (await fetch(REGIONS_LIST_ENDPOINT)).json();
-        base = regionList.find((regionInList) => regionInList.regionName === region)?.hostedSearchPagesEndpoint
-            ?? (() => { throw new Error(`Region ${region} not found. Available regions are ${regionList.map((regionInList) => regionInList.regionName)}`); })();
+const getRegionsListEndpoint = (environment) => `https://platform${environment}.cloud.coveo.com/rest/global/regions`;
+
+const getCoveoAPIUrl = async (region, environment, endpoint) => {
+    if (endpoint !== PLATFORM_ENDPOINT_NAME && endpoint !== SEARCH_ENDPOINT_NAME) {
+        throw new Error(`Endpoint ${endpoint} is not valid`);
     }
-    return base;
+    const regionListEndpoint = getRegionsListEndpoint(environment);
+    const regionList = await (await fetch(regionListEndpoint)).json();
+    if (!region) {
+        return regionList[0].hostedSearchPagesEndpoint;
+    }
+    return regionList.find((regionInList) => regionInList.regionName === region)?.[endpoint]
+        ?? (() => { throw new Error(`Region ${region} not found. Available regions are ${regionList.map((regionInList) => regionInList.regionName)}`); })();
 };
 
-const getPlatformUrlBase = async (region, isHipaaOrg) => {
-    let base = 'platform.cloud.coveo.com';
-    if (isHipaaOrg) {
-        base = 'platformhipaa.cloud.coveo.com';
-    } else if (region) {
-        const regionList = await (await fetch(REGIONS_LIST_ENDPOINT)).json();
-        base = regionList.find((regionInList) => regionInList.regionName === region)?.mainEndpoint
-            ?? (() => { throw new Error(`Region ${region} not found. Available regions are ${regionList.map((regionInList) => regionInList.regionName)}`); })();
-    }
-    return base;
-};
+const getPushEndpoint = async (region, environment, organizationId, pageName) => `https://${await getCoveoAPIUrl(region, environment, SEARCH_ENDPOINT_NAME)}/pages/${organizationId}/${pageName}`;
 
-const getPushEndpoint = async (region, isHipaaOrg, organizationId, pageName) => `https://${await getSearchPageUrlBase(region, isHipaaOrg)}/pages/${organizationId}/${pageName}`;
-
-const getPullEndpoint = async (region, isHipaaOrg, organizationId, pageId) => `https://${await getSearchPageUrlBase(region, isHipaaOrg)}/pages/${organizationId}/inappwidget/${pageId}?json=1`;
+const getPullEndpoint = async (region, environment, organizationId, pageId) => `https://${await getCoveoAPIUrl(region, environment, PLATFORM_ENDPOINT_NAME)}/pages/${organizationId}/inappwidget/${pageId}?json=1`;
 
 module.exports = {
-    getSearchPageUrlBase,
-    getPlatformUrlBase,
+    getCoveoAPIUrl,
     getPushEndpoint,
     getPullEndpoint,
+    PLATFORM_ENDPOINT_NAME,
 };
