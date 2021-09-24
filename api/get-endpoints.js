@@ -26,9 +26,9 @@ const getPlatformUrlBase = async (region, isHipaaOrg) => {
     return base;
 };
 
-const getPushEndpoint = async (region, isHipaaOrg, organizationId, pageName) => `https://${getSearchPageUrlBase(region, isHipaaOrg)}/pages/${organizationId}/${pageName}`;
+const getPushEndpoint = async (region, isHipaaOrg, organizationId, pageName) => `https://${await getSearchPageUrlBase(region, isHipaaOrg)}/pages/${organizationId}/${pageName}`;
 
-const getPullEndpoint = async (region, isHipaaOrg, organizationId, pageId) => `https://${getSearchPageUrlBase(region, isHipaaOrg)}/pages/${organizationId}/inappwidget/${pageId}?json=1`;
+const getPullEndpoint = async (region, isHipaaOrg, organizationId, pageId) => `https://${await getSearchPageUrlBase(region, isHipaaOrg)}/pages/${organizationId}/inappwidget/${pageId}?json=1`;
 
 module.exports = {
     getSearchPageUrlBase,
