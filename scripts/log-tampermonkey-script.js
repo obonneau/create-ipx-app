@@ -16,7 +16,7 @@ async function generateTamperMonkeyScript() {
 
     // Read tampermonkey script template
     let template = readFileSync(path.resolve(__dirname, '../templates/ipx-tampermonkey.js'), 'utf-8');
-    template = template.replace('{{LOADER_URL}}', getLoaderUrl());
+    template = template.replace('{{LOADER_URL}}', await getLoaderUrl());
 
     // Match all pages in domain
     const domain = `*.${process.argv[2]}/*`;
