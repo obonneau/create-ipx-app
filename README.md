@@ -17,9 +17,11 @@ You must add your IPX configuration inside the `config.json` file located at the
 
     You can find this id by navigating to the Administration Console and clicking the **Settings** gear in the upper-right corner. Under the **Organization** tab, select the **Information** menu. You'll see the **Organization ID** field.
 
-- `isHipaaOrg`: is the organization hosted on Coveo's HIPAA compliant environment. Defaults to `false`.
+- `environment`: the Coveo environment suffix on which the organization is hosted. When unspecified, defaults to production environment.
 
     Your organization is HIPAA compliant if it is hosted on the https://platformhipaa.cloud.coveo.com administration platform.
+    Similarly, you can target dev environments by specifing `"dev"`.
+    Supported regions vary based on the environment.
 
 - `pageId`: the id of your IPX.
 
@@ -28,6 +30,8 @@ You must add your IPX configuration inside the `config.json` file located at the
 - `pageName`: the name of your IPX.
 
 - `apiKey` : An API key created in the Coveo Platform following [this documentation](https://docs.coveo.com/en/1718/manage-an-organization/manage-api-keys#add-an-api-key). You must grant this key the `Edit Search Pages` and `Execute Queries` privileges.
+  
+- `region`: the name of the region your organization is hosted in. When unspecified, defaults to `"United States"`.
 
 ## Pull the code for your IPX
 
