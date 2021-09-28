@@ -15,7 +15,13 @@ const getCoveoAPIUrl = async (region, environment, endpoint) => {
         return regionList[0].hostedSearchPagesEndpoint;
     }
     return regionList.find((regionInList) => regionInList.regionName === region)?.[endpoint]
-        ?? (() => { throw new Error(`Region ${region} not found. Available regions are ${regionList.map((regionInList) => regionInList.regionName)}`); })();
+        ?? (
+            () => {
+                const availableRegions = regionList
+                    .filter((regionInList) => !!regionInList.hostedSearchPagesEndpoint)
+                    .map((regionInList) => regionInList.regionName);
+                throw new Error(`Region ${region} not found. Available regions for platform${environment} are ${availableRegions}`);
+            })();
 };
 
 const getPushEndpoint = async (region, environment, organizationId, pageName) => `https://${await getCoveoAPIUrl(region, environment, SEARCH_ENDPOINT_NAME)}/pages/${organizationId}/${pageName}`;
