@@ -2,6 +2,7 @@ const fetch = require('cross-fetch');
 
 const PLATFORM_ENDPOINT_NAME = 'mainEndpoint';
 const SEARCH_ENDPOINT_NAME = 'hostedSearchPagesEndpoint';
+const PRIMARY_REGION_TYPE = 'PRIMARY';
 
 const getRegionsListEndpoint = (environment) => `https://platform${environment}.cloud.coveo.com/rest/global/regions`;
 
@@ -12,15 +13,15 @@ const getCoveoAPIUrl = async (region, environment, endpoint) => {
     const regionListEndpoint = getRegionsListEndpoint(environment);
     const regionList = await (await fetch(regionListEndpoint)).json();
     if (!region) {
-        return regionList[0].hostedSearchPagesEndpoint;
+        return regionList[0][endpoint];
     }
     return regionList.find((regionInList) => regionInList.regionName === region)?.[endpoint]
         ?? (
             () => {
                 const availableRegions = regionList
-                    .filter((regionInList) => !!regionInList.hostedSearchPagesEndpoint)
+                    .filter((regionInList) => regionInList.regionType === PRIMARY_REGION_TYPE)
                     .map((regionInList) => regionInList.regionName);
-                throw new Error(`Region ${region} not found. Available regions for platform${environment} are ${availableRegions}`);
+                throw new Error(`Region ${region} not found. Available regions for ${environment} are ${availableRegions}`);
             })();
 };
 
