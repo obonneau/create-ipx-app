@@ -6,7 +6,7 @@ const PRIMARY_REGION_TYPE = 'PRIMARY';
 
 const getRegionsListEndpoint = (environment) => `https://platform${environment}.cloud.coveo.com/rest/global/regions`;
 
-const getCoveoAPIUrl = async (region, environment, endpoint) => {
+const getCoveoAPIUrl = async (region, environment = '', endpoint) => {
     if (endpoint !== PLATFORM_ENDPOINT_NAME && endpoint !== SEARCH_ENDPOINT_NAME) {
         throw new Error(`Endpoint ${endpoint} is not valid`);
     }

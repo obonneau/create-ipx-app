@@ -6,6 +6,8 @@ This documentation covers how to use this project to customize an IPX through th
 
 ## Getting Started
 
+Running this project requires Node version 14 or higher
+
 1. Fork the repo and clone your local copy.
 2. Install dependencies by running `npm i`.
 
